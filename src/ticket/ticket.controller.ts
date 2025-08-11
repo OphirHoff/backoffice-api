@@ -23,14 +23,13 @@ export class TicketsController {
 
     if (!ticket.description || !ticket.content) return undefined;
 
-    // return this.ticketsService.create(ticket);
-    return this.ticketsService.createTicket(ticket);
+    this.ticketsService.requestTicketCreation(ticket);
   }
 
   @Post('updateTicket')
   updateTicket(@Body() ticket: Ticket) {
     if (!ticket.id || !ticket.description || !ticket.content) return undefined;
 
-    return this.ticketsService.updateTicket(ticket);
+    this.ticketsService.updateTicket(ticket);
   }
 }

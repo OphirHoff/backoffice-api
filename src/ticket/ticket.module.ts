@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TicketsController } from './ticket.controller';
 import { TicketsService } from './ticket.service';
-import { EventEmitterModule } from '@nestjs/event-emitter'
+import { TicketsConsumer } from './ticket.consumer';
 
 @Module({
-  imports: [EventEmitterModule.forRoot()],
+  imports: [],
   controllers: [TicketsController],
-  providers: [TicketsService],
+  providers: [TicketsService, TicketsConsumer],
   exports: [TicketsService]
 })
 export class TicketModule {}

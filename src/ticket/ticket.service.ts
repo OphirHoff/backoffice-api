@@ -63,7 +63,11 @@ export class TicketsService {
     }
   }
 
-  async requestTicketUpdate(ticket: Ticket) {
+  async requestTicketUpdate(id: number, ticket: Partial<Ticket>) {
+    ticket.id = id;
+
+    console.log(ticket);
+
     await this.sqs.sendMessage({
       QueueUrl: this.queueUrl!,
       MessageBody: JSON.stringify(ticket)
@@ -72,7 +76,7 @@ export class TicketsService {
 
   async updateTicket(ticket: Ticket) {
     try {
-      const ticketUpdate = await this.prisma.ticket.update({
+      await this.prisma.ticket.update({
         where: {
           id: ticket.id
         },
@@ -88,7 +92,7 @@ export class TicketsService {
           id: ticket.id
         },
         data: {
-          status: `Updated ticket [id: ${ticketUpdate.id}]`
+          status: `Updated ticket [id: ${ticket.id}]`
         }
     });
     } catch (err) {

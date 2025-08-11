@@ -40,7 +40,12 @@ export class TicketsConsumer implements OnModuleInit {
                     if (!msg.Body || !msg.ReceiptHandle) continue;
                     
                     const ticket = JSON.parse(msg.Body);
-                    await this.ticketsService.createTicket(ticket);
+
+                    if ('id' in ticket) {
+                        await this.ticketsService.updateTicket(ticket);
+                    } else {
+                        await this.ticketsService.createTicket(ticket);
+                    }
 
                     await this.sqs.deleteMessage({
                         QueueUrl: this.queueUrl!,

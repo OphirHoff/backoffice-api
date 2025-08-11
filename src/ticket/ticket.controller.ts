@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, UseGuards, Put } from '@nestjs/common';
 import { TicketsService } from './ticket.service';
 import type { Ticket } from '../ticket';
 import { ApikeyAuthGuard } from '../apikey-auth/apikey-auth.guard';
@@ -13,7 +13,7 @@ export class TicketsController {
     return this.ticketsService.getAllTickets();
   }
 
-  @Get('getById/:id')
+  @Get(':id')
   getTicket(@Param('id') id: number) {
     return this.ticketsService.getTicketById(+id);
   }
@@ -26,10 +26,10 @@ export class TicketsController {
     this.ticketsService.requestTicketCreation(ticket);
   }
 
-  @Post('updateTicket')
-  updateTicket(@Body() ticket: Ticket) {
-    if (!ticket.id || !ticket.description || !ticket.content) return undefined;
+  @Put(':id')
+  updateTicket(@Param('id') id: number, @Body() ticket: Ticket) {
+    if (!ticket.description || !ticket.content) return undefined;
 
-    this.ticketsService.updateTicket(ticket);
+    this.ticketsService.requestTicketUpdate(+id, ticket);
   }
 }
